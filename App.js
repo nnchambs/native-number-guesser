@@ -1,4 +1,5 @@
 import React from 'react';
+import ErrorMessage from './ErrorMessage.js'
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 
 export default class App extends React.Component {
@@ -18,11 +19,11 @@ export default class App extends React.Component {
     this.setState({guessedNumber: guessedNumber})
   }
 
-  compareNumbers() {
-    if(this.state.guessedNumber > this.state.randomNumber) {
-
-    }
-  }
+  // compareNumbers() {
+  //   if(this.state.guessedNumber > this.state.randomNumber) {
+  //
+  //   }
+  // }
 
   render() {
     return (
@@ -37,7 +38,7 @@ export default class App extends React.Component {
 
         </TextInput>
         <Button title="Submit" onPress={() => this.compareNumbers()}></Button>
-        <Text></Text>
+        <ErrorMessage></ErrorMessage>
       </View>
     );
   }
