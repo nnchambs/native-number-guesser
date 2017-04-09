@@ -7,23 +7,46 @@ export default class App extends React.Component {
     super()
     this.state = {
       randomNumber: '',
-      guessedNumber: ''
+      guessedNumber: '',
+      guessedNumbers: [],
+      errorMessage: ''
     }
   }
 
   componentDidMount() {
+    this.generateRandomNumber()
+  }
+
+  generateRandomNumber() {
     this.setState({randomNumber: Math.floor(Math.random() * 100)})
+
   }
 
   setGuessedNumber(guessedNumber) {
-    this.setState({guessedNumber: guessedNumber})
+    let parsedGuess = parseInt(guessedNumber)
+    this.setState({guessedNumber: parsedGuess})
   }
 
-  // compareNumbers() {
-  //   if(this.state.guessedNumber > this.state.randomNumber) {
-  //
-  //   }
-  // }
+  addGuessedNumber(guessedNumber) {
+    let guessedNumbers = this.state.guessedNumbers
+    guessedNumbers.push(guessedNumber)
+    this.setState({guessedNumbers: guessedNumbers})
+  }
+
+  handlePress() {
+    this.compareNumbers()
+    this.addGuessedNumber(this.state.guessedNumber)
+  }
+  compareNumbers() {
+    let errorMessage
+    if(this.state.guessedNumber > this.state.randomNumber) {
+      this.setState({errorMessage: 'Too high.' })
+    } else if (this.state.guessedNumber < this.state.randomNumber) {
+      this.setState({errorMessage:'Too low.'})
+    } else if (this.state.guessedNumber === this.state.randomNumber) {
+      this.setState({errorMessage:'That is it!'})
+    }
+  }
 
   render() {
     return (
@@ -37,8 +60,8 @@ export default class App extends React.Component {
           >
 
         </TextInput>
-        <Button title="Submit" onPress={() => this.compareNumbers()}></Button>
-        <ErrorMessage></ErrorMessage>
+        <Button title="Submit" onPress={() => this.handlePress()}></Button>
+        <ErrorMessage errorMessage={this.state.errorMessage}></ErrorMessage>
       </View>
     );
   }
