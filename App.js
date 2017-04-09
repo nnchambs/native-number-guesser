@@ -8,7 +8,6 @@ export default class App extends React.Component {
     this.state = {
       randomNumber: '',
       guessedNumber: '',
-      guessedNumbers: [],
       errorMessage: ''
     }
   }
@@ -23,22 +22,14 @@ export default class App extends React.Component {
   }
 
   setGuessedNumber(guessedNumber) {
-    let parsedGuess = parseInt(guessedNumber)
-    this.setState({guessedNumber: parsedGuess})
-  }
-
-  addGuessedNumber(guessedNumber) {
-    let guessedNumbers = this.state.guessedNumbers
-    guessedNumbers.push(guessedNumber)
-    this.setState({guessedNumbers: guessedNumbers})
+    this.setState({guessedNumber: parseInt(guessedNumber)})
   }
 
   handlePress() {
     this.compareNumbers()
-    this.addGuessedNumber(this.state.guessedNumber)
   }
+
   compareNumbers() {
-    let errorMessage
     if(this.state.guessedNumber > this.state.randomNumber) {
       this.setState({errorMessage: 'Too high.' })
     } else if (this.state.guessedNumber < this.state.randomNumber) {
@@ -48,19 +39,26 @@ export default class App extends React.Component {
     }
   }
 
+  resetGame() {
+    this.setState({
+    guessedNumber: '',
+    guessedNumbers: [],
+    errorMessage: ''
+    })
+    this.generateRandomNumber()
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>{this.state.randomNumber ? this.state.randomNumber : 'Loading'}</Text>
-        <Text>{this.state.guessedNumber ? this.state.guessedNumber : ''}</Text>
         <Text>Guess a number between 1 and 100 :-P</Text>
         <TextInput
           style={{height: 40, width: 60, borderColor: 'gray', borderWidth: 1, marginLeft: 150}}
           onChangeText={(text) => this.setGuessedNumber(text)}
           >
-
         </TextInput>
         <Button title="Submit" onPress={() => this.handlePress()}></Button>
+        <Button title="Reset" onPress={() => this.resetGame()}></Button>
         <ErrorMessage errorMessage={this.state.errorMessage}></ErrorMessage>
       </View>
     );
